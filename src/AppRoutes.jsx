@@ -9,13 +9,13 @@ const AppRoutes = () => {
     const {auth} = useContext(Context)
     const [user, loading, error] = useAuthState(auth);
 
-    // if (loading) {
-    //     return <div>Загрузка...</div>;
-    // }
+    if (loading) {
+        return <div>Загрузка...</div>;
+    }
 
-    // if (error) {
-    //     return <div>Ошибка: {error.message}</div>;
-    // }
+    if (error) {
+        return <div>Ошибка: {error.message}</div>;
+    }
 
     return (
         <Routes>
