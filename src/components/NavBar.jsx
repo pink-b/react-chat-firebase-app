@@ -18,8 +18,6 @@ const NavBar = () => {
     console.log(auth);
     
     console.log(user);
-    user = false
-    
 
     return (
         <AppBar position="static">

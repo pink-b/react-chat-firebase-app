@@ -1,6 +1,5 @@
 import React, { createContext } from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom'; // Импортируем BrowserRouter
 import App from './App';
 
 // Импортируйте функции, которые вам нужны из SDK, которые вы хотите использовать
@@ -10,12 +9,12 @@ import { getFirestore } from "firebase/firestore";
 
 // Конфигурация вашего веб-приложения Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyCBACUz0ULp55qX_pEzWojWAl9K5p4AfjE",
-  authDomain: "chat-react-87813.firebaseapp.com",
-  projectId: "chat-react-87813",
-  storageBucket: "chat-react-87813.firebasestorage.app",
-  messagingSenderId: "603636947246",
-  appId: "1:603636947246:web:b68768d5e7d7e2eb9f42bf"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID
 };
 
 // Инициализация Firebase
@@ -25,18 +24,15 @@ const db = getFirestore(app);
 
 export const Context = createContext(null)
 
-
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-  <Context.Provider value={{
-    app,
-    auth,
-    db
-  }}>
-  
+    <Context.Provider value={{
+      app,
+      auth,
+      db
+    }}>
       <App />
-  </Context.Provider>
+    </Context.Provider>
   </React.StrictMode>
 );

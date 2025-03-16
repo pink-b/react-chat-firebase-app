@@ -7,43 +7,32 @@ import { Context } from '.';
 
 const AppRoutes = () => {
     const {auth} = useContext(Context)
-    let [user, loading, error] = useAuthState(auth); // Здесь вы можете использовать состояние аутентификации
-    if (loading) {
-        console.log("is Loading");
-        
-        return <div>Loading...</div>; // или любой другой индикатор загрузки
-    }
+    const [user, loading, error] = useAuthState(auth);
 
-    if (error) {
-        return <div>Ошибка: {error.message}</div>;
-      }
-    
-    console.log(user);
-    console.log(privateRoutes);
-    console.log(publicRoutes);
-    user = true
-    
-    
+    // if (loading) {
+    //     return <div>Загрузка...</div>;
+    // }
+
+    // if (error) {
+    //     return <div>Ошибка: {error.message}</div>;
+    // }
 
     return (
         <Routes>
             {user ? (
                 <>
-                    {privateRoutes.map(({ path, Component }) => {
-                        console.log(path);
-                        console.log(Component);
-                        
-                        
+                    {privateRoutes.map(({ path, Component }) => (
                         <Route key={path} path={path} element={<Component />} />
-})}
-                    <Route path="/" element={<Navigate to={CHAT_ROUTE} />} />
+                    ))}
+                    <Route path="*" element={<Navigate to={CHAT_ROUTE} />} />
+         
                 </>
             ) : (
                 <>
                     {publicRoutes.map(({ path, Component }) => (
                         <Route key={path} path={path} element={<Component />} />
                     ))}
-                    <Route path="/" element={<Navigate to={LOGIN_ROUTE} />} />
+                     <Route path="*" element={<Navigate to={LOGIN_ROUTE} />} />
                 </>
             )}
         </Routes>

@@ -1,8 +1,7 @@
 import { Box, Button, Container, Grid } from '@mui/material';
 import React, { useContext } from 'react';
 import { Context } from '..';
-import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 const Login = () => {
     const { auth } = useContext(Context);
