@@ -3,7 +3,8 @@ import { Context } from '..';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Avatar, Button, Container, Grid, TextField } from '@mui/material';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
-import { collection, getDocs, addDoc, FieldValue } from "firebase/firestore"; 
+import { collection, getDocs, addDoc, FieldValue, serverTimestamp, query, orderBy  } from "firebase/firestore"; 
+import Loader from './Loader';
 
 const Chat = () => {
     const {auth, db} = useContext(Context)
@@ -11,26 +12,35 @@ const Chat = () => {
     const [value, setValue] = useState('')
     console.log(db);
 
-    const [messages, setMessages] = useState([]);
+    // const [messages, setMessages] = useState([]);
+    const messagesRef = query(collection(db, "messages"), orderBy('createdAt'));
+    const [messages, loading] = useCollectionData(messagesRef);
 
-    useEffect(() => {
-        getMessages()
-    }, [])
+    console.log(messages);
+
+    if(loading) {
+        return <Loader/>
+    }
     
-    // const [messages, loading] = useCollectionData(
-    //     db.collection('messages')
-    // )
 
-    const getMessages = async () => {
-        const querySnapshot = await getDocs(collection(db, "messages"));
-        querySnapshot.forEach((doc) => {
-        //   console.log(`${doc.id} => ${doc.data()}`);
-        });
-        const newData = querySnapshot.docs
-                    .map((doc) => ({...doc.data(), id:doc.id }));
-                setMessages(newData);                
-                console.log(messages, newData);
-}
+//     useEffect(() => {
+//         getMessages()
+//     }, [])
+    
+//     // const [messages, loading] = useCollectionData(
+//     //     db.collection('messages')
+//     // )
+
+//     const getMessages = async () => {
+//         const querySnapshot = await getDocs(collection(db, "messages"));
+//         querySnapshot.forEach((doc) => {
+//         //   console.log(`${doc.id} => ${doc.data()}`);
+//         });
+//         const newData = querySnapshot.docs
+//                     .map((doc) => ({...doc.data(), id:doc.id }));
+//                 setMessages(newData);                
+//                 console.log(messages, newData);
+// }
 
     // console.log(messages);
     
@@ -42,13 +52,14 @@ const Chat = () => {
               displayName: user.displayName,
               photoURL: user.photoURL,
               text: value,
-            //   createdAt: FieldValue.serverTimestamp
+              createdAt: serverTimestamp()
             });
             console.log("Document written with ID: ", docRef.id);
+            setValue('')
           } catch (e) {
             console.error("Error adding document: ", e);
           }
-          setValue('')
+          
         
     }
 
